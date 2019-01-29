@@ -13,6 +13,7 @@ docker rm name_container
 //excluir imagem
 docker rmi name_image
 
+## -----Postgres--------------------
 docker run \
     --name postgres \
     -e POSTGRES_USER=kairolamarca \
@@ -36,3 +37,25 @@ docker run \
     --link postgres:postgres \
     -d
     adminer
+
+## -----MongoDB---------------------------------
+
+docker run \
+    --name mongodb \
+    -p 27017:27017 \
+    -e MONGO_INITDB_ROOT_USERNAME=admin \
+    -e MONGO_INITDB_ROOT_PASSWORD=senhaadmin \
+    -d \
+    mongo:4
+
+docker run \
+    --name mongoClient \
+    -p 3000:3000 \
+    --link mongodb:mongodb \
+    mongoclient/mongoclient
+
+docker exec -it mongodb \
+    mongo --host localhost -u admin -p senhaadmin --authenticationDatabase admin \
+    --eval "db.getSiblingDB('heroes').createUser({user: 'kairolamarca', pwd: 'minhasenhasecreta', roles: [{role: 'readWrite', db: 'heroes'}]})"
+
+
