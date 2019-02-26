@@ -15,8 +15,9 @@ const MOCK_HEROI_ATUALIZAR = {
 describe('Postgres Strategy', function () {
     this.timeout(Infinity);
     this.beforeAll(async function () {
-        await context.connect()
-        await context.create(MOCK_HEROI_ATUALIZAR)
+        await context.connect();
+        await context.delete();
+        await context.create(MOCK_HEROI_ATUALIZAR);        
     });
     it('PostgresSQL Connection', async function () {
         const result = await context.isConnected();
@@ -62,5 +63,10 @@ describe('Postgres Strategy', function () {
             dataNascimento: '1998-01-01'
         }
         */
+    })
+    it('remover por id', async function (){
+        const [item] = await context.read({});
+        const result = await context.delete(item.id);
+        assert.deepEqual(result, 1)
     })
 })
