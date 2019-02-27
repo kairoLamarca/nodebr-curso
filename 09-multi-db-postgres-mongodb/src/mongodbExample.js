@@ -11,10 +11,10 @@ Mongoose.connect('mongodb://kairolamarca:minhasenhasecreta@localhost:27017/heroi
 const connection = Mongoose.connection;
 
 connection.once('open', () => console.log('database rodando!!'));
-setTimeout(() => {
-    const state = connection.readyState;
-    console.log('state', state);
-}, 1000);
+// setTimeout(() => {
+//     const state = connection.readyState;
+//     console.log('state', state);
+// }, 1000);
 
 /*
     0: Desconectado
@@ -22,3 +22,28 @@ setTimeout(() => {
     2: Conectando
     3: Desconectando
  */
+
+const heroisSchema = new Mongoose.Schema({
+    nome: {
+        type: String,
+        required: true
+    },
+    poder: {
+        type: String,
+        required: true
+    },
+    insertedAt: {
+        type: Date,
+        default: new Date()
+    }
+})
+const model = Mongoose.model('heroi', heroisSchema);
+
+async function main() {
+    const resultCadastrar = await model.create({
+        nome: 'Batman',
+        poder: 'Dinheiro'
+    })
+    console.log('result cadastrar', resultCadastrar);
+}
+main();
