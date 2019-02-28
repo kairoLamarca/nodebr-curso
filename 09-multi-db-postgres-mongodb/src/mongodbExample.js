@@ -45,5 +45,8 @@ async function main() {
         poder: 'Dinheiro'
     })
     console.log('result cadastrar', resultCadastrar);
+
+    const listItems = await model.find();
+    console.log('items', listItems);
 }
 main();
