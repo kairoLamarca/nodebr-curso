@@ -1,5 +1,11 @@
 const ICrud = require('./interfaces/interfaceCrud');
 const Mongoose = require('mongoose');
+const STATUS = {
+    0: 'Desconectado',
+    1: 'Conectado',
+    2: 'Conectando',
+    3: 'Desconectando'
+}
 
 class MongoDB extends ICrud {
     constructor() {
@@ -7,8 +13,15 @@ class MongoDB extends ICrud {
         this._herois = null;
         this._driver = null;
     }
-    isConnected() {
-        const state = connection.readyState;
+    async isConnected() {
+        const state = STATUS[connection.readyState];
+        if (state === 'Conectado') return state;
+
+        if (state !== 'Conectando') return state
+
+        await new Promise(resolve => setTimeout(resolve, 1000))
+
+        return STATUS[connection.readyState];
     }
     defineModel() {
         this._herois = new Mongoose.Schema({

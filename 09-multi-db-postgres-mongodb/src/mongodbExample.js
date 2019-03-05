@@ -23,7 +23,7 @@ connection.once('open', () => console.log('database rodando!!'));
     3: Desconectando
  */
 
-const heroisSchema = new Mongoose.Schema({
+const heroiSchema = new Mongoose.Schema({
     nome: {
         type: String,
         required: true
@@ -37,7 +37,7 @@ const heroisSchema = new Mongoose.Schema({
         default: new Date()
     }
 })
-const model = Mongoose.model('heroi', heroisSchema);
+const model = Mongoose.model('heroi', heroiSchema);
 
 async function main() {
     const resultCadastrar = await model.create({
