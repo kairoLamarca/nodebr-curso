@@ -14,17 +14,17 @@ class MongoDB extends ICrud {
         this._driver = null;
     }
     async isConnected() {
-        const state = STATUS[connection.readyState];
+        const state = STATUS[this._driver.readyState];
         if (state === 'Conectado') return state;
 
         if (state !== 'Conectando') return state
 
         await new Promise(resolve => setTimeout(resolve, 1000))
 
-        return STATUS[connection.readyState];
+        return STATUS[this._driver.readyState];
     }
     defineModel() {
-        this._herois = new Mongoose.Schema({
+        heroiSchema = new Mongoose.Schema({
             nome: {
                 type: String,
                 required: true
@@ -38,7 +38,7 @@ class MongoDB extends ICrud {
                 default: new Date()
             }
         })
-        const model = Mongoose.model('heroi', heroisSchema);
+        this._herois = Mongoose.model('heroi', heroiSchema);
     }
     connect() {
         Mongoose.connect('mongodb://kairolamarca:minhasenhasecreta@localhost:27017/herois',
@@ -47,10 +47,12 @@ class MongoDB extends ICrud {
 
                 console.log('Falha na conexão!', error);
             });
+
         const connection = Mongoose.connection;
+        this._driver = connection;
         connection.once('open', () => console.log('database rodando!!'));
     }
-    create(item) {
+    async create(item) {
         const resultCadastrar = await model.create({
             nome: 'Batman',
             poder: 'Dinheiro'
