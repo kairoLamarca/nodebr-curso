@@ -53,9 +53,14 @@ class MongoDB extends ICrud {
         connection.once('open', () => console.log('database rodando!!'));
         this.defineModel();
     }
-    async create(item) {
+    create(item) {
         return this._herois.create(item);
     }
+    read(item, skip = 0, limit = 100) {
+        return this._herois.find(item).skip(skip).limit(limit);
+        //return this._herois.count();
+    }
+
 }
 
 module.exports = MongoDB;
