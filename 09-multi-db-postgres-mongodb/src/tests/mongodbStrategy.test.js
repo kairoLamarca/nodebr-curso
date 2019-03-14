@@ -51,7 +51,13 @@ describe('MongoDB Suite de testes', function () {
         const result = await context.update(MOCK_HEROI_ID, {
             nome: 'Pernalonga'
         })
-        
+
         assert.deepEqual(result.nModified, 1);
+    })
+
+    it('remover', async () => {
+        const result = await context.delete(MOCK_HEROI_ID);
+
+        assert.deepEqual(result.n, 1);
     })
 })
