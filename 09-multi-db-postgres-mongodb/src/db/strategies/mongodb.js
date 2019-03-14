@@ -60,7 +60,9 @@ class MongoDB extends ICrud {
         return this._herois.find(item).skip(skip).limit(limit);
         //return this._herois.count();
     }
-
+    update(id, item) {
+        return this._herois.updateOne({ _id: id }, { $set: item });
+    }
 }
 
 module.exports = MongoDB;
