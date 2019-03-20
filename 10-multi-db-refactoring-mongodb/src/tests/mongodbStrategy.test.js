@@ -1,5 +1,6 @@
 const assert = require('assert');
 const MongoDb = require('./../db/strategies/mongodb/mongodb');
+const HeroiSchema = require('./../db/strategies/mongodb/schemas/heroisSchema');
 const Context = require('./../db/strategies/base/contextStrategy');
 
 const MOCK_HEROI_CADASTRAR = {
@@ -16,10 +17,11 @@ const MOCK_HEROI_ATUALIZAR = {
 }
 let MOCK_HEROI_ID = '';
 
-const context = new Context(new MongoDb());
+let context = {};
 describe('MongoDB Suite de testes', function () {
     this.beforeAll(async () => {
-        await context.connect();
+        const connection = MongoDb.connect();
+        context = new Context(new MongoDb(connection, HeroiSchema));
         await context.create(MOCK_HEROI_DEFAULT);
         const result = await context.create(MOCK_HEROI_ATUALIZAR);
         MOCK_HEROI_ID = result._id;
@@ -36,14 +38,14 @@ describe('MongoDB Suite de testes', function () {
         assert.deepEqual({ nome, poder }, MOCK_HEROI_CADASTRAR);
     })
 
-    it('listar', async () => {                
+    it('listar', async () => {
         //pega a primeira posição do array, e somente o nome e o poder da primeira posição
         const [{ nome, poder }] = await context.read({ nome: MOCK_HEROI_DEFAULT.nome });
 
         result = {
             nome, poder
         }
-        
+
         assert.deepEqual(result, MOCK_HEROI_DEFAULT);
     })
 
