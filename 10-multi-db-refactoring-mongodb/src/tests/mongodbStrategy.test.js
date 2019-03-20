@@ -1,5 +1,5 @@
 const assert = require('assert');
-const MongoDb = require('./../db/strategies/mongodb');
+const MongoDb = require('./../db/strategies/mongodb/mongodb');
 const Context = require('./../db/strategies/base/contextStrategy');
 
 const MOCK_HEROI_CADASTRAR = {

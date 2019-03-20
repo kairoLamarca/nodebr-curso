@@ -1,4 +1,4 @@
-const ICrud = require('./interfaces/interfaceCrud');
+const ICrud = require('./../interfaces/interfaceCrud');
 const Mongoose = require('mongoose');
 const STATUS = {
     0: 'Desconectado',
