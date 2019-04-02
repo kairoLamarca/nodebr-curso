@@ -6,7 +6,7 @@ const MOCK_HEROI_CADASTRAR = {
     poder: 'Marreta Bionica'
 }
 
-describe.only('Suite de testes da API Heroes', function () {
+describe('Suite de testes da API Heroes', function () {
     this.beforeAll(async () => {
         app = await api;
     })
@@ -82,5 +82,9 @@ describe.only('Suite de testes da API Heroes', function () {
         assert.ok(statusCode === 200);
         assert.notStrictEqual(_id, undefined);
         assert.deepEqual(message, "Heroi cadastrado com sucesso!");
+    })
+
+    it('atualizar PATCH - /herois/:id', async () => {
+
     })
 })
