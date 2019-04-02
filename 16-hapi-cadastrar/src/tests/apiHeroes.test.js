@@ -1,8 +1,12 @@
 const assert = require('assert');
 const api = require('./../api');
 let app = {};
+const MOCK_HEROI_CADASTRAR = {
+    nome: 'Chapolin Colorado',
+    poder: 'Marreta Bionica'
+}
 
-describe('Suite de testes da API Heroes', function () {
+describe.only('Suite de testes da API Heroes', function () {
     this.beforeAll(async () => {
         app = await api;
     })
@@ -40,18 +44,18 @@ describe('Suite de testes da API Heroes', function () {
         })
 
         const errorResult = {
-            "statusCode": 400, 
-            "error": "Bad Request", 
-            "message": "child \"limit\" fails because [\"limit\" must be a number]", 
-            "validation": { 
-                "source": "query", 
-                "keys": ["limit"] 
+            "statusCode": 400,
+            "error": "Bad Request",
+            "message": "child \"limit\" fails because [\"limit\" must be a number]",
+            "validation": {
+                "source": "query",
+                "keys": ["limit"]
             }
         }
         assert.deepEqual(result.statusCode, 400);
         assert.deepEqual(result.payload, JSON.stringify(errorResult));
     })
-    it('listar /herois - deve filtrar um item', async () => {
+    it('listar GET - /herois - deve filtrar um item', async () => {
         const NAME = 'Homem Aranha-1554166799611';
         const result = await app.inject({
             method: 'GET',
@@ -63,5 +67,20 @@ describe('Suite de testes da API Heroes', function () {
 
         assert.deepEqual(statusCode, 200);
         assert.deepEqual(dados[0].nome, NAME);
+    })
+
+    it('cadastrar POST - /herois', async () => {
+        const result = await app.inject({
+            method: 'POST',
+            url: `/herois`,
+            payload: JSON.stringify(MOCK_HEROI_CADASTRAR)
+        })
+
+        const statusCode = result.statusCode;
+        const { message, _id } = JSON.parse(result.payload);
+
+        assert.ok(statusCode === 200);
+        assert.notStrictEqual(_id, undefined);
+        assert.deepEqual(message, "Heroi cadastrado com sucesso!");
     })
 })
