@@ -1,5 +1,6 @@
 const BaseRoute = require('./base/baseRoute');
 const Joi = require('joi')
+const Boom = require('boom');
 const failAction = (request, headers, erro) => {
     throw erro
 }
@@ -42,7 +43,7 @@ class HeroRoutes extends BaseRoute {
                 }
                 catch (error) {
                     console.log('DEU RUIM', error);
-                    return "Erro interno no servidor";
+                    return Boom.internal();
                 }
             }
         }
@@ -73,7 +74,7 @@ class HeroRoutes extends BaseRoute {
                 }
                 catch (error) {
                     console.log('DEU RUIM', error)
-                    return 'Internal Error!'
+                    return Boom.internal();
                 }
             }
         }
@@ -116,7 +117,7 @@ class HeroRoutes extends BaseRoute {
                 }
                 catch (error) {
                     console.error('DEU RUIM', error);
-                    return 'Erro interno!';
+                    return Boom.internal();
                 }
             }
         }
@@ -126,7 +127,7 @@ class HeroRoutes extends BaseRoute {
         return {
             path: '/herois/{id}',
             method: 'DELETE',
-            config: {                
+            config: {
                 validate: {
                     failAction,
                     params: {
@@ -149,7 +150,7 @@ class HeroRoutes extends BaseRoute {
                 }
                 catch (error) {
                     console.log('DEU RUIM', error);
-                    return 'Erro interno';
+                    return Boom.internal();
                 }
             }
         }
