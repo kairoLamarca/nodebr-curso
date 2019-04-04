@@ -106,7 +106,7 @@ class HeroRoutes extends BaseRoute {
 
                     const result = await this.db.update(id, dados);
 
-                    if(result.nModified !== 1) return {
+                    if (result.nModified !== 1) return {
                         message: 'Não foi possível atualizar!'
                     }
 
@@ -117,6 +117,39 @@ class HeroRoutes extends BaseRoute {
                 catch (error) {
                     console.error('DEU RUIM', error);
                     return 'Erro interno!';
+                }
+            }
+        }
+    }
+
+    delete() {
+        return {
+            path: '/herois/{id}',
+            method: 'DELETE',
+            config: {                
+                validate: {
+                    failAction,
+                    params: {
+                        id: Joi.string().required()
+                    }
+                }
+            },
+            handler: async (request) => {
+                try {
+                    const { id } = request.params;
+                    const result = await this.db.delete(id);
+                    if (result.n !== 1)
+                        return {
+                            message: 'Não foi possivel remover o item'
+                        };
+
+                    return {
+                        message: 'Heroi removido com sucesso!'
+                    }
+                }
+                catch (error) {
+                    console.log('DEU RUIM', error);
+                    return 'Erro interno';
                 }
             }
         }
