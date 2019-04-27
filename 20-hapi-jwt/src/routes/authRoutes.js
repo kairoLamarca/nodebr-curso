@@ -22,7 +22,8 @@ class AuthRoutes extends BaseRoute {
         return {
             path: '/login',
             method: 'POST',
-            config: {            
+            config: {    
+                auth: false,        
                 tags: ['api'],
                 description: 'Obter token',
                 notes: 'faz login com user e senha do banco',
