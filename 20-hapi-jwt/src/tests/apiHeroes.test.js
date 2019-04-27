@@ -1,6 +1,8 @@
 const assert = require('assert');
 const api = require('./../api');
 let app = {};
+const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Inh1eGFkYXNpbHZhIiwiaWQiOjEsImlhdCI6MTU1NjM5MTEzOX0.WrR3_9a9bMbwbpi8W_BUJb1D_0ybsypowJ4_PMwJRPo';
+
 const MOCK_HEROI_CADASTRAR = {
     nome: 'Chapolin Colorado',
     poder: 'Marreta Bionica'

@@ -1,4 +1,5 @@
 //npm i vision inert hapi-swagger
+//npm i hapi-auth-jwt2
 const Hapi = require('hapi');
 const Context = require('./db/strategies/base/contextStrategy');
 const MongoDb = require('./db/strategies/mongodb/mongodb');
@@ -9,6 +10,8 @@ const AuthRoute = require('./routes/authRoutes');
 const HapiSwagger = require('hapi-swagger');
 const Vision = require('vision');
 const Inert = require('inert');
+
+const HapiJwt = require('hapi-auth-jwt2');
 const JWT_SECRET = 'MEU_SEGREDÃO_123';
 
 const app = new Hapi.Server({
@@ -31,6 +34,7 @@ async function main() {
         lang: 'pt'
     }
     await app.register([
+        HapiJwt,
         Vision,
         Inert,
         {
@@ -38,7 +42,20 @@ async function main() {
             options: swaggerOptions
         }
     ])
-
+    app.auth.strategy('jwt', 'jwt', {
+        key: JWT_SECRET,
+        // options: {
+        //     expiresIn: 20
+        // }
+        validate: (dado, request) => {
+            //verifica no banco se o usuario continua ativo
+            //verifica no banco se o usuario continua pagando
+            return {
+                isValid: true //caso não valido false
+            }
+        }
+    })
+    app.auth.default('jwt');
     app.route([
         ...mapRoutes(new HeroRoute(context), HeroRoute.methods()),
         ...mapRoutes(new AuthRoute(JWT_SECRET), AuthRoute.methods())
