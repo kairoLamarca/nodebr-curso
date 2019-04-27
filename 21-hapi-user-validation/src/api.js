@@ -1,5 +1,6 @@
 //npm i vision inert hapi-swagger
 //npm i hapi-auth-jwt2
+//npm i bcrypt
 const Hapi = require('hapi');
 const Context = require('./db/strategies/base/contextStrategy');
 const MongoDb = require('./db/strategies/mongodb/mongodb');
