@@ -10,8 +10,8 @@ const USER = {
     password: '123'
 }
 const USER_DB = {
-    ...USER,
-    password: ''
+    username: USER.username.toLowerCase(),
+    password: '$2b$04$SmijvUEnqfBbXtcdpMBnU.h8g/pb40Ml0zobsobOGQQYTHSZjbIwu'
 }
 
 describe('Auth test suite', function () {
@@ -20,7 +20,8 @@ describe('Auth test suite', function () {
 
         const connectionPostgres = await PostGres.connect()
         const model = await PostGres.defineModel(connectionPostgres, UsuarioSchema)
-        //const result = await model.update(null, USER_DB, true)
+        const postgres = new Context(new PostGres(connectionPostgres, model));
+        await postgres.update(null, USER_DB, true)
     })
 
     it('deve obter um token', async () => {
@@ -35,5 +36,22 @@ describe('Auth test suite', function () {
 
         assert.deepEqual(statusCode, 200);
         assert.ok(dados.token.length > 10)
+    })
+
+    it('deve retornar não autorizado ao tentar obter um login errado', async () => {
+        const result = await app.inject({
+            method: 'POST',
+            url: '/login',
+            payload: {
+                username: 'kairolamarca',
+                password: '123'
+            }
+        });
+
+        const statusCode = result.statusCode;
+        const dados = JSON.parse(result.payload);
+
+        assert.deepEqual(statusCode, 401);
+        assert.deepEqual(dados.error, 'Unauthorized');
     })
 })
