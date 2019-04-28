@@ -16,10 +16,10 @@ const Vision = require('vision');
 const Inert = require('inert');
 
 const HapiJwt = require('hapi-auth-jwt2');
-const JWT_SECRET = 'MEU_SEGREDÃO_123';
+const JWT_SECRET = process.env.JWT_KEY;
 
 const app = new Hapi.Server({
-    port: 5000
+    port: process.env.PORT
 })
 
 function mapRoutes(instance, methods) {
