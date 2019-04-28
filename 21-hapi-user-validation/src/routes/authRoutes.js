@@ -4,6 +4,7 @@ const Boom = require('boom');
 
 //npm i jsonwebtoken
 const Jwt = require('jsonwebtoken');
+const PasswordHelper = require('./../helpers/passwordHelper');
 
 const failAction = (request, headers, erro) => {
     throw erro
@@ -14,16 +15,18 @@ const USER = {
 }
 
 class AuthRoutes extends BaseRoute {
-    constructor(secret) {
+    constructor(secret, db) {
         super();
         this.secret = secret;
+        this.db = db;
     }
+
     login() {
         return {
             path: '/login',
             method: 'POST',
-            config: {    
-                auth: false,        
+            config: {
+                auth: false,
                 tags: ['api'],
                 description: 'Obter token',
                 notes: 'faz login com user e senha do banco',
@@ -38,13 +41,23 @@ class AuthRoutes extends BaseRoute {
             handler: async (request) => {
                 const { username, password } = request.payload;
 
-                if (username.toLowerCase() !== USER.username || password !== USER.password) {
-                    return Boom.unauthorized();
+                const [usuario] = await this.db.read({
+                    username: username.toLowerCase()
+                })
+                if (!usuario) {
+                    return Boom.unauthorized('O Usuario informado não existe');
                 }
+                const match = await PasswordHelper.comparePassword(password, usuario.password);
+                if (!match) {
+                    return Boom.unauthorized('O usuario ou senha inválidos');
+                }
+                // if (username.toLowerCase() !== USER.username || password !== USER.password) {
+                //     return Boom.unauthorized();
+                // }
 
                 const token = Jwt.sign({
                     username: username,
-                    id: 1
+                    id: usuario.id
                 }, this.secret)
 
                 return {

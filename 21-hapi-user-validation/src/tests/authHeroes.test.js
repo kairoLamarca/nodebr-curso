@@ -1,20 +1,33 @@
 const assert = require('assert');
 const api = require('../api');
+const Context = require('./../db/strategies/base/contextStrategy');
+const PostGres = require('./../db/strategies/postgres/postgres');
+const UsuarioSchema = require('./../db/strategies/postgres/schemas/usuarioSchema');
+
 let app = {};
+const USER = {
+    username: 'Xuxadasilva',
+    password: '123'
+}
+const USER_DB = {
+    ...USER,
+    password: ''
+}
 
 describe('Auth test suite', function () {
     this.beforeAll(async () => {
         app = await api;
+
+        const connectionPostgres = await PostGres.connect()
+        const model = await PostGres.defineModel(connectionPostgres, UsuarioSchema)
+        //const result = await model.update(null, USER_DB, true)
     })
 
     it('deve obter um token', async () => {
         const result = await app.inject({
             method: 'POST',
             url: '/login',
-            payload: {
-                username: 'Xuxadasilva',
-                password: '123'
-            }
+            payload: USER
         })
 
         const statusCode = result.statusCode;
