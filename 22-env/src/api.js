@@ -1,6 +1,15 @@
-//npm i vision inert hapi-swagger
-//npm i hapi-auth-jwt2
-//npm i bcrypt
+const { config } = require('dotenv');
+const { join } = require('path');
+const { ok } = require('assert');
+
+const env = process.env.NODE_ENV || 'dev'
+ok(env === 'prod' || env === 'dev', 'a env é invalida, ou dev ou prod');
+
+const configPath = join(__dirname, './config', `.env.${env}`)
+config({
+    path: configPath
+})
+
 const Hapi = require('hapi');
 const Context = require('./db/strategies/base/contextStrategy');
 const MongoDb = require('./db/strategies/mongodb/mongodb');
