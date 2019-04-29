@@ -80,3 +80,5 @@ cross-env NODE_ENV=prod npm t
 ## ------ HEROKU -----
 
 npm i -g heroku
+
+npm run prod
