@@ -99,3 +99,23 @@ git add .
 git commit -m "v1"
 
 git push heroku master
+
+## ---- PM2 
+
+npm i pm2
+
+"scripts": {
+  "start": "pm2-runtime app.js"
+}
+
+npm i pm2 -g
+
+pm2 start --name herois -i 10 src/api.js
+
+pm2 monit
+
+pm2 logs
+
+pm2 kill
+
+heroku config:set PM2_PUBLIC_KEY=e4eqazg1xoi5hmu PM2_SECRET_KEY=9ruipf00984b52c
