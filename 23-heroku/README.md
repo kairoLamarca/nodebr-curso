@@ -82,3 +82,20 @@ cross-env NODE_ENV=prod npm t
 npm i -g heroku
 
 npm run prod
+
+heroku login
+heroku apps:login
+
+heroku apps:create cursonodebr-kairo
+
+git init
+
+heroku git:remote --app cursonodebr-kairo
+
+git remote -v
+
+git add .
+
+git commit -m "v1"
+
+git push heroku master
