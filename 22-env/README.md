@@ -71,3 +71,8 @@ docker exec -it mongodb mongo --host localhost -u admin -p senhaadmin --authenti
 
 docker run -d -p 3000:3000 mongoclient/mongoclient --name mongoClient --link mongodb:mongodb
 
+## ------- ENV -----
+
+npm i -g cross-env
+
+cross-env NODE_ENV=prod npm t
